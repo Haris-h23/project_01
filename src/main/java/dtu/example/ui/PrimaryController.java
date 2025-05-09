@@ -307,4 +307,60 @@ public class PrimaryController {
         }
     }
 
+    @FXML
+    protected void editActivity() {
+        if (selectedActivity == null) {
+            showError("Select an activity first!");
+            return;
+        }
+    
+        String name = activityNameField.getText().trim();
+        String hoursText = activityHoursField.getText().trim();
+        String startText = activityStartWeekField.getText().trim();
+        String endText = activityEndWeekField.getText().trim();
+
+        if (!name.equalsIgnoreCase(selectedActivity.getName())) {
+            boolean nameExists = selectedProject.getActivities().stream()
+                .anyMatch(a -> a.getName().equalsIgnoreCase(name));
+        
+            if (nameExists) {
+                showError("An activity with that name already exists.");
+                return;
+            }
+        }
+        
+    
+        if (name.isEmpty() || hoursText.isEmpty() || startText.isEmpty() || endText.isEmpty()) {
+            showError("All fields must be filled.");
+            return;
+        }
+    
+        int hours = parseInt(hoursText);
+        int startWeek = parseInt(startText);
+        int endWeek = parseInt(endText);
+    
+        if (hours < 0) {
+            showError("Invalid number of hours.");
+            return;
+        }
+    
+        if (startWeek < 1 || startWeek > 52 || endWeek < 1 || endWeek > 52) {
+            showError("Week numbers must be between 1 and 52.");
+            return;
+        }
+    
+        if (endWeek < startWeek) {
+            showError("End week cannot be earlier than start week.");
+            return;
+        }
+    
+        selectedActivity.setName(name);
+        selectedActivity.setBudgetedHours(hours);
+        selectedActivity.setStartWeek(startWeek);
+        selectedActivity.setEndWeek(endWeek);
+    
+        updateActivityList();
+        goBackToProject();
+    }
+
 }
