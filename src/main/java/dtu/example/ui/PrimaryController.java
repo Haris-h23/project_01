@@ -459,5 +459,29 @@ public class PrimaryController {
         }
     }
 
+    @FXML
+    protected void goBackToProject() {
+        projectDetailsPage.setVisible(true);
+        activityPage.setVisible(false);
+    }
+
+    private void showProjectDetails() {
+        projectPage.setVisible(false);
+        projectDetailsPage.setVisible(true);
+    }
+    
+        private void showActivityDetails() {
+            projectDetailsPage.setVisible(false);
+            activityPage.setVisible(true);
+            projectDetailsPage.setVisible(false);
+            activityPage.setVisible(true);
+        }
+        
+    private void fillActivityFields(Activity activity) {
+        activityNameField.setText(activity.getName());
+        activityHoursField.setText(String.valueOf(activity.getBudgetedHours()));
+        activityStartWeekField.setText(String.valueOf(activity.getStartWeek()));
+        activityEndWeekField.setText(String.valueOf(activity.getEndWeek()));
+    }
 
 }
