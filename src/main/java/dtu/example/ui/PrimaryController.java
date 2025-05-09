@@ -274,4 +274,29 @@ public class PrimaryController {
         showActivityDetails();
     }
 
+    @FXML
+    protected void enterActivity() {
+        int selectedIndex = activityListView.getSelectionModel().getSelectedIndex();
+        if (selectedIndex >= 0) {
+            selectedActivity = null;
+
+            for (Activity activity : selectedProject.getActivities()) {
+                if (activity.getName().equals(activityListView.getItems().get(selectedIndex))) {
+                    selectedActivity = activity;
+                    break;
+                }
+            }
+
+            if (selectedActivity != null) {
+                activityTitle.setText("Editing: " + selectedActivity.getName());
+                fillActivityFields(selectedActivity);
+                updateStatusLabel(selectedActivity);
+                updateAssignedEmployeesList();
+                assignmentSection.setVisible(selectedProject.isLeader(loggedInUser));
+                approvalSection.setVisible(selectedProject.isLeader(loggedInUser));
+                showActivityDetails();
+            }
+        }
+    }
+
 }
