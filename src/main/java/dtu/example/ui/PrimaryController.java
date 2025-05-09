@@ -239,4 +239,39 @@ public class PrimaryController {
         popup.show();
     }
 
+    @FXML
+    protected void createActivity() {
+        if (selectedProject == null) {
+            showError("Select a project first!");
+            return;
+        }
+
+        if (!selectedProject.isLeader(loggedInUser)) {
+            showError("Only the project leader can create activities.");
+            return;
+        }
+
+        String defaultName = "New Activity";
+        boolean nameExists = selectedProject.getActivities().stream()
+        .anyMatch(a -> a.getName().equalsIgnoreCase(defaultName));
+
+        if (nameExists) {
+            showError("An activity with that name already exists.");
+            return;
+        }
+
+
+        selectedActivity = new Activity("New Activity", 0, 0, 0);
+        selectedProject.addActivity(selectedActivity);
+        activityTitle.setText("Create New Activity");
+
+        activityNameField.clear();
+        activityHoursField.clear();
+        activityStartWeekField.clear();
+        activityEndWeekField.clear();
+        
+
+        showActivityDetails();
+    }
+
 }
