@@ -107,5 +107,51 @@ public class PrimaryController {
         }
     }
 
+    private void updateActivityList() {
+        activityListView.getItems().clear();
+        if (selectedProject == null) return;
+
+        boolean isLeader = selectedProject.isLeader(loggedInUser);
+        List<Activity> activities = selectedProject.getActivities();
+
+        activityListView.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(item);
+                    Activity activity = activities.stream()
+                        .filter(a -> a.getName().equals(item))
+                        .findFirst().orElse(null);
+                    if (activity != null) {
+                        switch (activity.getStatus()) {
+                            case APPROVED -> setStyle("-fx-background-color: lightgreen;");
+                            case PENDING -> setStyle("-fx-background-color: yellow;");
+                            case REJECTED -> setStyle("-fx-background-color: red;");
+                            default -> setStyle("");
+                        }
+                    }
+                }
+            }
+        });
+
+        for (Activity activity : selectedProject.getActivities()) {
+            if (isLeader) {
+                activityListView.getItems().add(activity.getName());
+            } else {
+                for (Employee e : activity.getAssignedEmployees()) {
+                    if (e.getInitials().equalsIgnoreCase(loggedInUser)) {
+                        activityListView.getItems().add(activity.getName());
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+
 
 }
