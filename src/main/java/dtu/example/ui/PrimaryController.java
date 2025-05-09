@@ -362,5 +362,31 @@ public class PrimaryController {
         updateActivityList();
         goBackToProject();
     }
+    
+    @FXML
+    protected void assignEmployee() {
+        if (selectedActivity == null) {
+            showError("Select an activity first!");
+            return;
+        }
+
+        if (!selectedProject.isLeader(loggedInUser)) {
+            showError("Only the project leader can assign employees.");
+            return;
+        }
+
+        String initials = assignEmployeeField.getText().trim().toLowerCase();
+        if (!initials.matches("[a-z]{2,4}")) {
+            showError("Enter initials (2-4).");
+            return;
+        }
+
+        Employee employee = system.getOrCreateEmployee(initials);
+        selectedActivity.assignEmployee(employee);
+        assignEmployeeField.clear();
+
+        showInfo("Assigned " + initials + " to " + selectedActivity.getName());
+        updateAssignedEmployeesList();
+    }
 
 }
