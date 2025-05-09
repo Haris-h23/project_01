@@ -64,4 +64,22 @@ public class PrimaryController {
         }
     }
 
+    @FXML
+    protected void createProject() {
+        String projectName = projectNameField.getText();
+        String leaderInitials = projectLeaderField.getText().trim().toLowerCase();
+
+        if (!projectName.isEmpty() && leaderInitials.matches("[a-z]{2,4}")) {
+            Project newProject = system.createProject(projectName);
+            newProject.setProjectLeader(leaderInitials);
+            system.getOrCreateEmployee(leaderInitials);
+
+            updateProjectList();
+            projectNameField.clear();
+            projectLeaderField.clear();
+        } else {
+            showError("Enter project name and valid leader initial (2-4).");
+        }
+    }
+
 }
