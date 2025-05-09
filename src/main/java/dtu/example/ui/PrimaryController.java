@@ -170,4 +170,73 @@ public class PrimaryController {
         }
     }
 
+    @FXML
+    protected void generateProjectReport() {
+        if (selectedProject == null) {
+            showError("Select a project first!");
+            return;
+        }
+    
+        if (!selectedProject.isLeader(loggedInUser)) {
+            showError("Only the project leader can generate a report.");
+            return;
+        }
+    
+        int totalUsed = 0;
+        int totalBudget = 0;
+    
+        StringBuilder report = new StringBuilder();
+        report.append("Project Report for: ").append(selectedProject.getProjectName()).append("\n");
+    
+        for (Activity a : selectedProject.getActivities()) {
+            int used = a.getTotalRegisteredHours();
+            int budget = a.getBudgetedHours();
+            report.append(String.format("\n• %-20s Used: %-3d / Budget: %-3d hours\n", a.getName(), used, budget));
+        
+            // Add assigned employees if any
+            List<Employee> assigned = a.getAssignedEmployees(); // make sure this method exists
+            if (!assigned.isEmpty()) {
+                report.append("- Assigned to: ");
+                for (int i = 0; i < assigned.size(); i++) {
+                    report.append(assigned.get(i).getInitials()); // or .getName() if more readable
+                    if (i < assigned.size() - 1) {
+                        report.append(", ");
+                    }
+                }
+                report.append("\n");
+            }
+        
+            totalUsed += used;
+            totalBudget += budget;
+        }
+        
+    
+        int percent = totalBudget == 0 ? 0 : (int) ((totalUsed * 100.0f) / totalBudget);
+    
+        report.append("\n--------------------------------------------------\n");
+        report.append(String.format("Total used hours:     %d\n", totalUsed));
+        report.append(String.format("Total budgeted hours: %d\n", totalBudget));
+        report.append(String.format("Overall used:         %d%%\n", percent));
+    
+        Label titleLabel = new Label("📊 Project Report");
+        titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+    
+        TextArea reportArea = new TextArea(report.toString());
+        reportArea.setEditable(false);
+        reportArea.setStyle("-fx-font-family: 'monospace';");
+        reportArea.setPrefSize(500, 350);
+    
+        Button closeBtn = new Button("Close");
+        closeBtn.setOnAction(e -> ((Stage) closeBtn.getScene().getWindow()).close());
+    
+        VBox layout = new VBox(10, titleLabel, reportArea, closeBtn);
+        layout.setStyle("-fx-padding: 20; -fx-background-color: #f4f4f4;");
+        layout.setPrefWidth(520);
+    
+        Stage popup = new Stage();
+        popup.setTitle("Project Report");
+        popup.setScene(new Scene(layout));
+        popup.show();
+    }
+
 }
