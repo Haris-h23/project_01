@@ -299,4 +299,12 @@ public class PrimaryController {
         }
     }
 
+    private void updateAssignedEmployeesList() {
+        assignedEmployeesList.getItems().clear();
+        for (Employee e : selectedActivity.getAssignedEmployees()) {
+            int hours = selectedActivity.getRegisteredHours(e);
+            assignedEmployeesList.getItems().add(e.getInitials() + " (" + hours + "h)");
+        }
+    }
+
 }
