@@ -152,6 +152,22 @@ public class PrimaryController {
         }
     }
 
+    @FXML
+    private void handleLogout() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
+            Parent root = loader.load();
 
+            Stage stage = (Stage) logoutButton.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Login");
+            stage.setWidth(1000);
+            stage.setHeight(800);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Failed to return to login screen.");
+        }
+    }
 
 }
