@@ -389,4 +389,75 @@ public class PrimaryController {
         updateAssignedEmployeesList();
     }
 
+    @FXML
+    protected void registerHours() {
+        if (selectedActivity == null) return;
+        if (selectedProject.isLeader(loggedInUser)) {
+            showError("Leaders cannot register hours.");
+            return;
+        }
+
+        try {
+            int hours = Integer.parseInt(hoursUsedField.getText().trim());
+            Employee emp = system.getOrCreateEmployee(loggedInUser);
+            selectedActivity.registerHours(emp, hours);
+            showInfo("Hours registered.");
+            updateAssignedEmployeesList();
+        } catch (NumberFormatException e) {
+            showError("Enter a valid number of hours.");
+        }
+    }
+
+    @FXML
+    protected void markDone() {
+        if (selectedActivity == null) return;
+        if (selectedProject.isLeader(loggedInUser)) {
+            showError("Only assigned employees can mark done.");
+            return;
+        }
+
+        selectedActivity.setStatus(Activity.ActivityStatus.PENDING);
+        updateStatusLabel(selectedActivity);
+        updateActivityList();
+    }
+
+    @FXML
+    protected void approveActivity() {
+        if (!selectedProject.isLeader(loggedInUser)) {
+            showError("Only the leader can approve.");
+            return;
+        }
+
+        selectedActivity.setStatus(Activity.ActivityStatus.APPROVED);
+        updateStatusLabel(selectedActivity);
+        updateActivityList();
+        updateProjectList();
+    }
+
+    @FXML
+    protected void rejectActivity() {
+        if (!selectedProject.isLeader(loggedInUser)) {
+            showError("Only the leader can reject.");
+            return;
+        }
+
+        selectedActivity.setStatus(Activity.ActivityStatus.REJECTED);
+        updateStatusLabel(selectedActivity);
+        updateActivityList();
+        updateProjectList();
+    }
+
+    private void updateStatusLabel(Activity activity) {
+        Activity.ActivityStatus status = activity.getStatus();
+        statusLabel.setText("Status: " + status);
+
+        switch (status) {
+            case PENDING -> statusLabel.setStyle("-fx-text-fill: orange;");
+            case APPROVED -> statusLabel.setStyle("-fx-text-fill: green;");
+            case REJECTED -> statusLabel.setStyle("-fx-text-fill: red;");
+            default -> statusLabel.setStyle("-fx-text-fill: black;");
+        }
+    }
+
+
 }
