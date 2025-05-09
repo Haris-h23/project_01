@@ -101,7 +101,7 @@ public class PrimaryController {
             }
     
             projectTitle.setText("Project: " + selectedProject.getProjectName());
-            generateReportButton.setVisible(selectedProject.isLeader(loggedInUser)); // <-- Make sure this is here
+            generateReportButton.setVisible(selectedProject.isLeader(loggedInUser)); 
             showProjectDetails();
             updateActivityList();
         }
@@ -193,12 +193,12 @@ public class PrimaryController {
             int budget = a.getBudgetedHours();
             report.append(String.format("\n• %-20s Used: %-3d / Budget: %-3d hours\n", a.getName(), used, budget));
         
-            // Add assigned employees if any
-            List<Employee> assigned = a.getAssignedEmployees(); // make sure this method exists
+
+            List<Employee> assigned = a.getAssignedEmployees();
             if (!assigned.isEmpty()) {
                 report.append("- Assigned to: ");
                 for (int i = 0; i < assigned.size(); i++) {
-                    report.append(assigned.get(i).getInitials()); // or .getName() if more readable
+                    report.append(assigned.get(i).getInitials()); 
                     if (i < assigned.size() - 1) {
                         report.append(", ");
                     }
