@@ -484,4 +484,12 @@ public class PrimaryController {
         activityEndWeekField.setText(String.valueOf(activity.getEndWeek()));
     }
 
+    private int parseInt(String value) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
 }
