@@ -82,4 +82,9 @@ public class PrimaryController {
         }
     }
 
+    private void updateProjectList() {
+        setLoggedInUser(loggedInUser);
+    }
+
+
 }
