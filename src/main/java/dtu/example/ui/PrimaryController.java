@@ -86,5 +86,26 @@ public class PrimaryController {
         setLoggedInUser(loggedInUser);
     }
 
+    @FXML
+    protected void enterProject() {
+        int selectedIndex = projectListView.getSelectionModel().getSelectedIndex();
+        if (selectedIndex >= 0) {
+            String selected = projectListView.getItems().get(selectedIndex);
+            String projectNumber = selected.split(":")[0].trim();
+    
+            for (Project p : system.getProjects()) {
+                if (p.getProjectNumber().equals(projectNumber)) {
+                    selectedProject = p;
+                    break;
+                }
+            }
+    
+            projectTitle.setText("Project: " + selectedProject.getProjectName());
+            generateReportButton.setVisible(selectedProject.isLeader(loggedInUser)); // <-- Make sure this is here
+            showProjectDetails();
+            updateActivityList();
+        }
+    }
+
 
 }
