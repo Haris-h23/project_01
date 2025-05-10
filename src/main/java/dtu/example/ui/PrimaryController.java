@@ -27,7 +27,7 @@ public class PrimaryController {
     @FXML private HBox approvalSection;
     @FXML private VBox assignmentSection;
     @FXML private Button generateReportButton;
-    
+
     private String loggedInUser;
 
     public void setLoggedInUser(String initials) {
@@ -82,6 +82,12 @@ public class PrimaryController {
         }
     }
 
+    @FXML
+    protected void goBackToProjects() {
+        projectPage.setVisible(true);
+        projectDetailsPage.setVisible(false);
+    }
+
     private void updateProjectList() {
         setLoggedInUser(loggedInUser);
     }
@@ -101,11 +107,12 @@ public class PrimaryController {
             }
     
             projectTitle.setText("Project: " + selectedProject.getProjectName());
-            generateReportButton.setVisible(selectedProject.isLeader(loggedInUser)); 
+            generateReportButton.setVisible(selectedProject.isLeader(loggedInUser)); // <-- Make sure this is here
             showProjectDetails();
             updateActivityList();
         }
     }
+    
 
     private void updateActivityList() {
         activityListView.getItems().clear();
@@ -193,12 +200,12 @@ public class PrimaryController {
             int budget = a.getBudgetedHours();
             report.append(String.format("\n• %-20s Used: %-3d / Budget: %-3d hours\n", a.getName(), used, budget));
         
-
-            List<Employee> assigned = a.getAssignedEmployees();
+            // Add assigned employees if any
+            List<Employee> assigned = a.getAssignedEmployees(); // make sure this method exists
             if (!assigned.isEmpty()) {
                 report.append("- Assigned to: ");
                 for (int i = 0; i < assigned.size(); i++) {
-                    report.append(assigned.get(i).getInitials()); 
+                    report.append(assigned.get(i).getInitials()); // or .getName() if more readable
                     if (i < assigned.size() - 1) {
                         report.append(", ");
                     }
@@ -238,6 +245,7 @@ public class PrimaryController {
         popup.setScene(new Scene(layout));
         popup.show();
     }
+    
 
     @FXML
     protected void createActivity() {
@@ -305,7 +313,7 @@ public class PrimaryController {
             int hours = selectedActivity.getRegisteredHours(e);
             assignedEmployeesList.getItems().add(e.getInitials() + " (" + hours + "h)");
         }
-    }
+    }    
 
     @FXML
     protected void editActivity() {
@@ -483,6 +491,8 @@ public class PrimaryController {
         activityStartWeekField.setText(String.valueOf(activity.getStartWeek()));
         activityEndWeekField.setText(String.valueOf(activity.getEndWeek()));
     }
+    
+    
 
     private int parseInt(String value) {
         try {
@@ -505,5 +515,4 @@ public class PrimaryController {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
 }
