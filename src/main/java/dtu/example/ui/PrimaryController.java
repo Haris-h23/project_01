@@ -1,3 +1,5 @@
+// PrimaryController.java — Grouped by Functional Sections
+
 package dtu.example.ui;
 
 import dtu.example.ui.softwarehouse.*;
@@ -19,7 +21,7 @@ public class PrimaryController {
 
     @FXML private VBox projectPage, projectDetailsPage, activityPage;
     @FXML private TextField projectNameField, activityNameField, activityHoursField,
-                             activityEndWeekField, activityStartWeekField; 
+                             activityEndWeekField, activityStartWeekField, activityEndYearField; 
     @FXML private ListView<String> projectListView, activityListView, assignedEmployeesList;
     @FXML private Label projectTitle, activityTitle, statusLabel;
     @FXML private TextField projectLeaderField, assignEmployeeField, hoursUsedField;
@@ -141,11 +143,15 @@ public class PrimaryController {
         int totalUsed = 0;
         int totalBudget = 0;
         StringBuilder report = new StringBuilder();
-        report.append("Project Report for: ").append(selectedProject.getName()).append("\n");
+        report.append("Project Report for: ").append(selectedProject.getName())
+      .append(" (").append(selectedProject.getProjectNumber()).append(")\n");
         for (Activity a : selectedProject.getActivities()) {
             int used = a.getTotalRegisteredHours();
             int budget = a.getBudgetedHours();
-            report.append(String.format("\n• %-20s Used: %-3d / Budget: %-3d hours\n", a.getName(), used, budget));
+            String endDate = String.format("Week %d, %d", a.getEndWeek(), a.getEndYear());
+            report.append(String.format("\n• %-20s Used: %-3d / Budget: %-3d hours\n                                   Ends: %s\n",
+        a.getName(), used, budget, endDate));
+
             List<Employee> assigned = a.getAssignedEmployees();
             if (!assigned.isEmpty()) {
                 report.append("- Assigned to: ");
@@ -212,11 +218,13 @@ public class PrimaryController {
         }
         selectedActivity = new Activity(defaultName, 0, 0, 0);
         selectedProject.addActivity(selectedActivity);
+        updateActivityList();
         activityTitle.setText("Create New Activity");
         activityNameField.clear();
         activityHoursField.clear();
         activityStartWeekField.clear();
         activityEndWeekField.clear();
+        activityEndYearField.clear();
         showActivityDetails();
     }
 
@@ -230,6 +238,7 @@ public class PrimaryController {
         String hoursText = activityHoursField.getText().trim();
         String startText = activityStartWeekField.getText().trim();
         String endText = activityEndWeekField.getText().trim();
+        String endYearText = activityEndYearField.getText().trim();
         if (!name.equalsIgnoreCase(selectedActivity.getName())) {
             boolean nameExists = selectedProject.getActivities().stream()
                 .anyMatch(a -> a.getName().equalsIgnoreCase(name));
@@ -245,6 +254,7 @@ public class PrimaryController {
         int hours = parseInt(hoursText);
         int startWeek = parseInt(startText);
         int endWeek = parseInt(endText);
+        int endYear = parseInt(endYearText);
         if (hours < 0) {
             showError("Invalid number of hours.");
             return;
@@ -253,14 +263,27 @@ public class PrimaryController {
             showError("Week numbers must be between 1 and 52.");
             return;
         }
-        if (endWeek < startWeek) {
+        if (endWeek < startWeek && endYear == 2025) {
             showError("End week cannot be earlier than start week.");
+            return;
+        }
+        if (endYearText.isEmpty()) {
+            showError("End year must be filled.");
+            return;
+        }
+        if (endYear < 2025) {
+            showError("End Year must be 2025 or later.");
+            return;
+        }
+        if (endYear > 2125) {
+            showError("End Year must be reasonable");
             return;
         }
         selectedActivity.setName(name);
         selectedActivity.setBudgetedHours(hours);
         selectedActivity.setStartWeek(startWeek);
         selectedActivity.setEndWeek(endWeek);
+        selectedActivity.setEndYear(endYear);
         updateActivityList();
         goBackToProject();
     }
@@ -335,6 +358,7 @@ public class PrimaryController {
         activityHoursField.setText(String.valueOf(activity.getBudgetedHours()));
         activityStartWeekField.setText(String.valueOf(activity.getStartWeek()));
         activityEndWeekField.setText(String.valueOf(activity.getEndWeek()));
+        activityEndYearField.setText(String.valueOf(activity.getEndYear()));
     }
 
     private void updateAssignedEmployeesList() {

@@ -57,6 +57,9 @@
 
                     <Label text="End Week:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
                     <TextField fx:id="activityEndWeekField" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                    <Label text="End year:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                    <TextField fx:id="activityEndYearField" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
                 </GridPane>
 
                 <Button text="Save Changes" onAction="#editActivity" maxWidth="150"/>

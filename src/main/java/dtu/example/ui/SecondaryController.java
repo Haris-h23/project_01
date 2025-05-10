@@ -27,7 +27,7 @@ public class SecondaryController {
                 Parent root = loader.load();
 
                 PrimaryController controller = loader.getController();
-                controller.setLoggedInUser(initials);
+                controller.setLoggedInUser(initials);  // Pass user to primary controller
 
                 Stage stage = (Stage) initialsField.getScene().getWindow();
                 stage.setScene(new Scene(root));
@@ -88,6 +88,15 @@ protected void handleShowAll() {
             sb.append(String.format(" - Activities: %d\n", total));
             sb.append(String.format(" - Done: %d%%\n", percent));
             sb.append(" - Employees involved: ");
+            if (!p.getActivities().isEmpty()) {
+                sb.append(" - Activity Overview:\n");
+                for (Activity a : p.getActivities()) {
+                    sb.append(String.format("     • %s (Ends: Week %d, %d, Status: %s)\n",
+                        a.getName(), a.getEndWeek(), a.getEndYear(), a.getStatus()));
+            }
+}
+sb.append("\n");
+
 
             if (employeeInitials.isEmpty()) {
                 sb.append("None\n");
