@@ -494,4 +494,19 @@ public class PrimaryController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    private void confirmDeleteProject(Project project) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Project Deletion");
+        alert.setHeaderText("Are you sure you want to delete project: " + project.getName() + "?");
+        alert.setContentText("This will delete all associated activities.");
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                system.getProjects().remove(project);
+                updateProjectList();
+                showInfo("Project deleted.");
+            }
+        });
+    }
+
 }
