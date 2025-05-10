@@ -496,6 +496,11 @@ public class PrimaryController {
     }
 
     private void confirmDeleteProject(Project project) {
+        if (!project.isLeader(loggedInUser)) {
+            showError("Only the project leader can delete the project.");
+            return;
+        }
+
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Project Deletion");
         alert.setHeaderText("Are you sure you want to delete project: " + project.getName() + "?");
@@ -508,5 +513,6 @@ public class PrimaryController {
             }
         });
     }
+
 
 }
