@@ -27,7 +27,7 @@ public class SecondaryController {
                 Parent root = loader.load();
 
                 PrimaryController controller = loader.getController();
-                controller.setLoggedInUser(initials);  // Pass user to primary controller
+                controller.setLoggedInUser(initials);
 
                 Stage stage = (Stage) initialsField.getScene().getWindow();
                 stage.setScene(new Scene(root));

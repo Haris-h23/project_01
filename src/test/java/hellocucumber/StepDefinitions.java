@@ -194,8 +194,6 @@ public class StepDefinitions {
 
     /*---------------------- ProjectManagementSystem.java tests ----------------------*/
 
-
-    /*---------------------- SysytemHolder.java tests ----------------------*/
     @Given("I use the shared system")
     public void i_use_the_shared_system() {
     // Write code here that turns the phrase above into concrete actions

@@ -1,5 +1,3 @@
-// PrimaryController.java — Grouped by Functional Sections
-
 package dtu.example.ui;
 
 import dtu.example.ui.softwarehouse.*;

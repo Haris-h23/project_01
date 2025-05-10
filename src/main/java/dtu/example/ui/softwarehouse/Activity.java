@@ -53,7 +53,7 @@ public class Activity {
     public void assignEmployee(Employee employee) {
         if (!assignedEmployees.contains(employee)) {
             assignedEmployees.add(employee);
-            employee.assignToActivity(this); // link both ways
+            employee.assignToActivity(this); 
         }
     }
 
