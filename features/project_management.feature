@@ -19,6 +19,6 @@ Feature: Project management
 
   Scenario: Add activities to a project
     Given I create a project named "Mars"
-    And I create an activity named "Testing" with 20 hours, start week 5, and end week 7
+    And I create an activity named "Testing" with 20 hours, start week 5, and end week 7 in year 2025
     When I add the activity to the project
     Then the project should contain 1 activity
