@@ -88,6 +88,11 @@ protected void handleShowAll() {
             sb.append(String.format(" - Activities: %d\n", total));
             sb.append(String.format(" - Done: %d%%\n", percent));
             sb.append(" - Employees involved: ");
+                        if (employeeInitials.isEmpty()) {
+                sb.append("None\n");
+            } else {
+                sb.append(String.join(", ", employeeInitials)).append("\n");
+            }
             if (!p.getActivities().isEmpty()) {
                 sb.append(" - Activity Overview:\n");
                 for (Activity a : p.getActivities()) {
@@ -95,16 +100,7 @@ protected void handleShowAll() {
                         a.getName(), a.getEndWeek(), a.getEndYear(), a.getStatus()));
             }
 }
-sb.append("\n");
-
-
-            if (employeeInitials.isEmpty()) {
-                sb.append("None\n");
-            } else {
-                sb.append(String.join(", ", employeeInitials)).append("\n");
-            }
-
-            sb.append("\n");
+sb.append("---------------------------\n");
         }
 
         outputArea.setText(sb.toString());
