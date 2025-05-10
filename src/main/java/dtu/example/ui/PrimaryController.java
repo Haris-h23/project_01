@@ -1,5 +1,3 @@
-// PrimaryController.java — Grouped by Functional Sections
-
 package dtu.example.ui;
 
 import dtu.example.ui.softwarehouse.*;
@@ -10,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
 import java.util.*;
@@ -107,57 +104,8 @@ public class PrimaryController {
     }
 
     private void updateProjectList() {
-        setLoggedInUser(loggedInUser); 
-
-        projectListView.setCellFactory(lv -> new ListCell<>() {
-        @Override
-        protected void updateItem(String item, boolean empty) {
-            super.updateItem(item, empty);
-            if (empty || item == null) {
-                setGraphic(null);
-                setText(null);
-                return;
-            }
-
-            String projectNumber = item.split(":")[0].trim();
-            Project project = system.getProjects().stream()
-                .filter(p -> p.getProjectNumber().equals(projectNumber))
-                .findFirst().orElse(null);
-
-            if (project == null) {
-                setGraphic(new Label(item));
-                return;
-            }
-
-            Label label = new Label(item);
-            Button deleteBtn = new Button("Delete");
-
-            if (project.isLeader(loggedInUser)) {
-                deleteBtn.setOnAction(e -> confirmDeleteProject(project)); 
-            } else {
-                deleteBtn.setDisable(true); 
-            }
-
-            HBox hbox = new HBox(10, label, deleteBtn);
-            HBox.setHgrow(label, Priority.ALWAYS);
-            hbox.setStyle("-fx-alignment: CENTER_LEFT;"); 
-
-            setGraphic(hbox);
-        }
-    });
-
-    projectListView.getItems().clear();
-    for (Project project : system.getProjects()) {
-        int total = project.getActivities().size();
-        long done = project.getActivities().stream()
-            .filter(a -> a.getStatus() == Activity.ActivityStatus.APPROVED)
-            .count();
-        int percent = total == 0 ? 0 : (int) ((done * 100.0f) / total);
-
-        String display = String.format("%s: %s - Done: %d%%", project.getProjectNumber(), project.getName(), percent);
-        projectListView.getItems().add(display);
+        setLoggedInUser(loggedInUser);
     }
-}
 
     @FXML
     protected void enterProject() {
@@ -361,58 +309,47 @@ public class PrimaryController {
         }
     }
 
-private void updateActivityList() {
-    activityListView.getItems().clear();
-    if (selectedProject == null) return;
-    
-    boolean isLeader = selectedProject.isLeader(loggedInUser);
-    List<Activity> activities = selectedProject.getActivities();
-
-    activityListView.setCellFactory(lv -> new ListCell<>() {
-        @Override
-        protected void updateItem(String item, boolean empty) {
-            super.updateItem(item, empty);
-            if (empty || item == null) {
-                setText(null);
-                setStyle("");
+    private void updateActivityList() {
+        activityListView.getItems().clear();
+        if (selectedProject == null) return;
+        boolean isLeader = selectedProject.isLeader(loggedInUser);
+        List<Activity> activities = selectedProject.getActivities();
+        activityListView.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(item);
+                    Activity activity = activities.stream()
+                        .filter(a -> a.getName().equals(item))
+                        .findFirst().orElse(null);
+                    if (activity != null) {
+                        switch (activity.getStatus()) {
+                            case APPROVED -> setStyle("-fx-background-color: lightgreen;");
+                            case PENDING -> setStyle("-fx-background-color: yellow;");
+                            case REJECTED -> setStyle("-fx-background-color: red;");
+                            default -> setStyle("");
+                        }
+                    }
+                }
+            }
+        });
+        for (Activity activity : selectedProject.getActivities()) {
+            if (isLeader) {
+                activityListView.getItems().add(activity.getName());
             } else {
-                setText(item);
-                Activity activity = activities.stream()
-                    .filter(a -> a.getName().equals(item))
-                    .findFirst().orElse(null);
-                
-                if (activity != null) {
-                    switch (activity.getStatus()) {
-                        case APPROVED -> setStyle("-fx-background-color: lightgreen;");
-                        case PENDING -> setStyle("-fx-background-color: yellow;");
-                        case REJECTED -> setStyle("-fx-background-color: red;");
-                        default -> setStyle("");
+                for (Employee e : activity.getAssignedEmployees()) {
+                    if (e.getInitials().equalsIgnoreCase(loggedInUser)) {
+                        activityListView.getItems().add(activity.getName());
+                        break;
                     }
-
-                    Label label = new Label(item);
-                    Button deleteBtn = new Button("Delete");
-
-                    if (isLeader) {
-                        deleteBtn.setOnAction(e -> confirmDeleteActivity(activity));
-                    } else {
-                        deleteBtn.setDisable(true); 
-                    }
-
-                    HBox hbox = new HBox(10, label, deleteBtn);
-                    setGraphic(hbox);
                 }
             }
         }
-    });
-
-    for (Activity activity : selectedProject.getActivities()) {
-        if (isLeader || activity.getAssignedEmployees().stream()
-                .anyMatch(e -> e.getInitials().equalsIgnoreCase(loggedInUser))) {
-            activityListView.getItems().add(activity.getName());
-        }
     }
-}
-
 
     private void fillActivityFields(Activity activity) {
         activityNameField.setText(activity.getName());
@@ -555,45 +492,4 @@ private void updateActivityList() {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
-    private void confirmDeleteProject(Project project) {
-        if (!project.isLeader(loggedInUser)) {
-            showError("Only the project leader can delete the project.");
-            return;
-        }
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirm Project Deletion");
-        alert.setHeaderText("Are you sure you want to delete project: " + project.getName() + "?");
-        alert.setContentText("This will delete all associated activities.");
-        alert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                system.getProjects().remove(project);
-                updateProjectList();
-                showInfo("Project deleted.");
-            }
-        });
-    }
-
-    private void confirmDeleteActivity(Activity activity) {
-    if (!selectedProject.isLeader(loggedInUser)) {
-        showError("Only the project leader can delete activities.");
-        return;
-    }
-
-    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-    alert.setTitle("Confirm Activity Deletion");
-    alert.setHeaderText("Are you sure you want to delete activity: " + activity.getName() + "?");
-    alert.setContentText("This cannot be undone.");
-    alert.showAndWait().ifPresent(response -> {
-        if (response == ButtonType.OK) {
-            selectedProject.getActivities().remove(activity);
-            updateActivityList();
-            showInfo("Activity deleted.");
-        }
-    });
-}
-
-
-
 }
