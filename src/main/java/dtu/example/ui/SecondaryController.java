@@ -83,7 +83,7 @@ protected void handleShowAll() {
                 }
             }
 
-            sb.append(String.format("Project: %s (%s)\n", p.getProjectName(), p.getProjectNumber()));
+            sb.append(String.format("Project: %s (%s)\n", p.getName(), p.getProjectNumber()));
             sb.append(String.format(" - Project Leader: %s\n", p.getProjectLeader()));
             sb.append(String.format(" - Activities: %d\n", total));
             sb.append(String.format(" - Done: %d%%\n", percent));

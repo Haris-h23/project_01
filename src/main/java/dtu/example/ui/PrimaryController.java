@@ -61,7 +61,7 @@ public class PrimaryController {
 
                 String display = String.format("%s: %s - Done: %d%%",
                         project.getProjectNumber(),
-                        project.getProjectName(),
+                        project.getName(),
                         percent);
                 projectListView.getItems().add(display);
             }
@@ -123,7 +123,7 @@ public class PrimaryController {
                 }
             }
 
-            projectTitle.setText("Project: " + selectedProject.getProjectName());
+            projectTitle.setText("Project: " + selectedProject.getName());
             generateReportButton.setVisible(selectedProject.isLeader(loggedInUser));
             showProjectDetails();
             updateActivityList();
@@ -143,7 +143,7 @@ public class PrimaryController {
         int totalUsed = 0;
         int totalBudget = 0;
         StringBuilder report = new StringBuilder();
-        report.append("Project Report for: ").append(selectedProject.getProjectName()).append("\n");
+        report.append("Project Report for: ").append(selectedProject.getName()).append("\n");
         for (Activity a : selectedProject.getActivities()) {
             int used = a.getTotalRegisteredHours();
             int budget = a.getBudgetedHours();
