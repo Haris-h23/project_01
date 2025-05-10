@@ -22,9 +22,9 @@ public class StepDefinitions {
     /*------------------------------ Activity.java tests ------------------------------*/
 
     @Given("I create an activity named {string} with {int} hours, start week {int}, and end week {int}")
-    public void i_create_an_activity(String name, Integer hours, Integer startWeek, Integer endWeek) {
+    public void i_create_an_activity(String name, Integer hours, Integer startWeek, Integer endWeek, Integer endYear) {
     // Write code here that turns the phrase above into concrete actions
-        activity = new Activity(name, hours, startWeek, endWeek);
+        activity = new Activity(name, hours, startWeek, endWeek, endYear);
     }
 
     @Then("the activity name should be {string}")
