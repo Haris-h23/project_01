@@ -100,7 +100,7 @@ protected void handleShowAll() {
                         a.getName(), a.getEndWeek(), a.getEndYear(), a.getStatus()));
             }
 }
-sb.append("---------------------------\n");
+sb.append("-----------------------------\n");
         }
 
         outputArea.setText(sb.toString());
