@@ -4,21 +4,19 @@ import io.cucumber.java.en.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 import dtu.example.ui.softwarehouse.Activity;
 import dtu.example.ui.softwarehouse.Activity.ActivityStatus;
 import dtu.example.ui.softwarehouse.Employee;
 import dtu.example.ui.softwarehouse.Project;
-import dtu.example.ui.softwarehouse.ProjectManagementSystem;
 
 public class StepDefinitions {
 	
     private Activity activity;
     private Employee employee;
     private Project project;
-    private ProjectManagementSystem system;
+
 
 
 /*------------------------------------------ Activity.java tests -------------------------------------------- */
