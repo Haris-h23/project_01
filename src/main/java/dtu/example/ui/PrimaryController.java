@@ -514,5 +514,25 @@ public class PrimaryController {
         });
     }
 
+    private void confirmDeleteActivity(Activity activity) {
+    if (!selectedProject.isLeader(loggedInUser)) {
+        showError("Only the project leader can delete activities.");
+        return;
+    }
+
+    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+    alert.setTitle("Confirm Activity Deletion");
+    alert.setHeaderText("Are you sure you want to delete activity: " + activity.getName() + "?");
+    alert.setContentText("This cannot be undone.");
+    alert.showAndWait().ifPresent(response -> {
+        if (response == ButtonType.OK) {
+            selectedProject.getActivities().remove(activity);
+            updateActivityList();
+            showInfo("Activity deleted.");
+        }
+    });
+}
+
+
 
 }
