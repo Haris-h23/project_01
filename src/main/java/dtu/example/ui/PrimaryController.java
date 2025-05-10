@@ -216,7 +216,7 @@ public class PrimaryController {
             showError("An activity with that name already exists.");
             return;
         }
-        selectedActivity = new Activity(defaultName, 0, 0, 0);
+        selectedActivity = new Activity(defaultName, 0, 0, 0, 2025);
         selectedProject.addActivity(selectedActivity);
         updateActivityList();
         activityTitle.setText("Create New Activity");

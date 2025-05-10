@@ -17,7 +17,7 @@ public class Activity {
         NONE, PENDING, APPROVED, REJECTED
     }
 
-    public Activity(String name, int budgetedHours, int startWeek, int endWeek) {
+    public Activity(String name, int budgetedHours, int startWeek, int endWeek, int endYear) {
         this.name = name;
         this.budgetedHours = budgetedHours;
         this.startWeek = startWeek;
