@@ -1,7 +1,7 @@
 Feature: Registering hours on an activity
 
   Scenario: An employee registers hours
-    Given I create an activity named "Implementation" with 100 hours, start week 10, and end week 15
+    Given I create an activity named "Implementation" with 100 hours, start week 10, and end week 15 in year 2025
     And I have a user named "MH"
     When I assign the user to the activity
     And the user registers 8 hours
@@ -9,7 +9,7 @@ Feature: Registering hours on an activity
     And the total registered hours should be 8
 
   Scenario: Multiple employees register hours
-    Given I create an activity named "Testing" with 50 hours, start week 12, and end week 16
+    Given I create an activity named "Testing" with 50 hours, start week 12, and end week 10 in year 2026
     And I have a user named "AB"
     And I assign the user to the activity
     And the user registers 4 hours
