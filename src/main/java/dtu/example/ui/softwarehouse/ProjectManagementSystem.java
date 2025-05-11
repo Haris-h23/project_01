@@ -2,7 +2,7 @@ package dtu.example.ui.softwarehouse;
 
 import java.util.*;
 
-public class ProjectManagementSystem {
+public class ProjectManagementSystem /*lavet af abdullah*/{
     private List<Project> projects = new ArrayList<>();
     private Map<String, Employee> employees = new HashMap<>();
 

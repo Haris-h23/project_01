@@ -2,7 +2,7 @@ package dtu.example.ui.softwarehouse;
 
 import java.util.*;
 
-public class Activity {
+public class Activity /*lavet af haris*/{
     private String name;
     private int budgetedHours;
     private int startWeek;

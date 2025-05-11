@@ -2,10 +2,10 @@ package dtu.example.ui.softwarehouse;
 
 import java.util.*;
 
-public class Project {
+public class Project /*lavet af lano*/{
     private static int projectCounter = 25000;
     private String projectNumber;
-    private String name; // <- use this consistently
+    private String name; 
     private String projectLeaderInitials;
     private List<Activity> activities = new ArrayList<>();
     private boolean isDone = false;

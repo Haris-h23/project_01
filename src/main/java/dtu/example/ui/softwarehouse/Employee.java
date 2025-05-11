@@ -2,7 +2,7 @@ package dtu.example.ui.softwarehouse;
 
 import java.util.*;
 
-public class Employee {
+public class Employee /*lavet af haris*/{
     private String initials;
     private List<Activity> activities = new ArrayList<>();
 
