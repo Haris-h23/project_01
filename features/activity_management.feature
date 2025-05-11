@@ -14,10 +14,13 @@ Feature: Activity management
     And I set the budgeted hours to 100
     And I set the start week to 5
     And I set the end week to 10
+    And I set the end year to 2026
     Then the activity name should be "Final"
     And the budgeted hours should be 100
     And the start week should be 5
     And the end week should be 10
+    And the end year should be 2026
+
 
   Scenario: Update status
     Given I create an activity named "QA" with 30 hours, start week 20, and end week 22 in year 2025

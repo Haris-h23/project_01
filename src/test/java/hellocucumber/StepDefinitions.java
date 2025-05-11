@@ -123,6 +123,17 @@ public class StepDefinitions {
         assertEquals(expectedTotal.intValue(), activity.getTotalRegisteredHours());
     }
 
+    @When("I set the end year to {int}")
+    public void i_set_the_end_year_to(Integer year) {
+        activity.setEndYear(year);
+    }
+
+    @Then("the end year should be {int}")
+    public void the_end_year_should_be(Integer expected) {
+        assertEquals(expected.intValue(), activity.getEndYear());
+    }
+
+
     /*------------------------------ Project.java tests ------------------------------*/
 
     @Given("I create a project named {string}")
