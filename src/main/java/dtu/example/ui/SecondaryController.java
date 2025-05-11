@@ -18,7 +18,7 @@ public class SecondaryController {
     @FXML private Label errorLabel;
 
     @FXML
-    protected void handleLogin() {
+    protected void handleLogin() /*lavet af abdullah*/{
         String initials = initialsField.getText().trim().toLowerCase();
 
         if (initials.matches("[a-z]{2,4}")) {
@@ -27,7 +27,7 @@ public class SecondaryController {
                 Parent root = loader.load();
 
                 PrimaryController controller = loader.getController();
-                controller.setLoggedInUser(initials);  // Pass user to primary controller
+                controller.setLoggedInUser(initials);  
 
                 Stage stage = (Stage) initialsField.getScene().getWindow();
                 stage.setScene(new Scene(root));
@@ -46,7 +46,7 @@ public class SecondaryController {
     }
 
 @FXML
-protected void handleShowAll() {
+protected void handleShowAll() /*lavet af haris*/{
     try {
         VBox layout = new VBox(10);
         layout.setStyle("-fx-padding: 20; -fx-background-color: white;");
@@ -75,7 +75,6 @@ protected void handleShowAll() {
                     .count();
             int percent = total == 0 ? 0 : (int)((approved * 100.0f) / total);
 
-            // Collect unique employees involved in this project
             Set<String> employeeInitials = new HashSet<>();
             for (Activity a : p.getActivities()) {
                 for (Employee emp : a.getAssignedEmployees()) {
