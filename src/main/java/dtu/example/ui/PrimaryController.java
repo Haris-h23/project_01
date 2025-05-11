@@ -32,7 +32,7 @@ public class PrimaryController {
 
     // ----------------------------- LOGIN -----------------------------
 
-    public void setLoggedInUser(String initials) {
+    public void setLoggedInUser(String initials) /*lavet af abdullah*/{
         this.loggedInUser = initials.toLowerCase();
         projectListView.getItems().clear();
 
@@ -67,7 +67,7 @@ public class PrimaryController {
     }
 
     @FXML
-    private void handleLogout() {
+    private void handleLogout() /*lavet af abdullah*/{
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
             Parent root = loader.load();
@@ -87,7 +87,7 @@ public class PrimaryController {
     // ----------------------------- PROJECT -----------------------------
 
     @FXML
-    protected void createProject() {
+    protected void createProject() /*lavet af lano*/{
         String projectName = projectNameField.getText();
         String leaderInitials = projectLeaderField.getText().trim().toLowerCase();
 
@@ -103,12 +103,12 @@ public class PrimaryController {
         }
     }
 
-    private void updateProjectList() {
+    private void updateProjectList() /*lavet af lano*/{
         setLoggedInUser(loggedInUser);
     }
 
     @FXML
-    protected void enterProject() {
+    protected void enterProject() /*lavet af lano*/{
         int selectedIndex = projectListView.getSelectionModel().getSelectedIndex();
         if (selectedIndex >= 0) {
             String selected = projectListView.getItems().get(selectedIndex);
@@ -129,7 +129,7 @@ public class PrimaryController {
     }
 
     @FXML
-    protected void generateProjectReport() {
+    protected void generateProjectReport() /*lavet af lano*/{
         if (selectedProject == null) {
             showError("Select a project first!");
             return;
@@ -185,12 +185,12 @@ public class PrimaryController {
     }
 
     @FXML
-    protected void goBackToProjects() {
+    protected void goBackToProjects() /*lavet af lano*/{
         projectPage.setVisible(true);
         projectDetailsPage.setVisible(false);
     }
 
-    private void showProjectDetails() {
+    private void showProjectDetails() /*lavet af lano*/{
         projectPage.setVisible(false);
         projectDetailsPage.setVisible(true);
     }
@@ -198,7 +198,7 @@ public class PrimaryController {
     // ----------------------------- ACTIVITY -----------------------------
 
     @FXML
-    protected void createActivity() {
+    protected void createActivity() /*lavet af haris*/{
         if (selectedProject == null) {
             showError("Select a project first!");
             return;
@@ -227,7 +227,7 @@ public class PrimaryController {
     }
 
     @FXML
-    protected void editActivity() {
+    protected void editActivity() /*lavet af haris*/{
 
     if (!selectedProject.isLeader(loggedInUser)) {
         showError("Only the project leader can edit this activity.");
@@ -292,7 +292,7 @@ public class PrimaryController {
     }
 
     @FXML
-    protected void enterActivity() {
+    protected void enterActivity() /*lavet af haris*/{
         int selectedIndex = activityListView.getSelectionModel().getSelectedIndex();
         if (selectedIndex >= 0) {
             selectedActivity = null;
@@ -314,7 +314,7 @@ public class PrimaryController {
         }
     }
 
-    private void updateActivityList() {
+    private void updateActivityList() /*lavet af haris*/{
         activityListView.getItems().clear();
         if (selectedProject == null) return;
         boolean isLeader = selectedProject.isLeader(loggedInUser);
@@ -356,7 +356,7 @@ public class PrimaryController {
         }
     }
 
-    private void fillActivityFields(Activity activity) {
+    private void fillActivityFields(Activity activity) /*lavet af haris*/{
         activityNameField.setText(activity.getName());
         activityHoursField.setText(String.valueOf(activity.getBudgetedHours()));
         activityStartWeekField.setText(String.valueOf(activity.getStartWeek()));
@@ -364,7 +364,7 @@ public class PrimaryController {
         activityEndYearField.setText(String.valueOf(activity.getEndYear()));
     }
 
-    private void updateAssignedEmployeesList() {
+    private void updateAssignedEmployeesList() /*lavet af haris*/{
         assignedEmployeesList.getItems().clear();
         for (Employee e : selectedActivity.getAssignedEmployees()) {
             int hours = selectedActivity.getRegisteredHours(e);
@@ -373,12 +373,12 @@ public class PrimaryController {
     }
 
     @FXML
-    protected void goBackToProject() {
+    protected void goBackToProject() /*lavet af haris*/{
         projectDetailsPage.setVisible(true);
         activityPage.setVisible(false);
     }
 
-    private void showActivityDetails() {
+    private void showActivityDetails() /*lavet af haris*/{
         projectDetailsPage.setVisible(false);
         activityPage.setVisible(true);
     }
@@ -386,7 +386,7 @@ public class PrimaryController {
     // ----------------------------- EMPLOYEE -----------------------------
 
     @FXML
-    protected void assignEmployee() {
+    protected void assignEmployee() /*lavet af haris*/{
         if (selectedActivity == null) {
             showError("Select an activity first!");
             return;
@@ -408,7 +408,7 @@ public class PrimaryController {
     }
 
     @FXML
-    protected void registerHours() {
+    protected void registerHours() /*lavet af haris*/{
         if (selectedActivity == null) return;
         if (selectedProject.isLeader(loggedInUser)) {
             showError("Leaders cannot register hours.");
@@ -426,7 +426,7 @@ public class PrimaryController {
     }
 
     @FXML
-    protected void markDone() {
+    protected void markDone() /*lavet af haris*/{
         if (selectedActivity == null) return;
         if (selectedProject.isLeader(loggedInUser)) {
             showError("Only assigned employees can mark done.");
@@ -440,7 +440,7 @@ public class PrimaryController {
     // ----------------------------- APPROVAL -----------------------------
 
     @FXML
-    protected void approveActivity() {
+    protected void approveActivity() /*lavet af abdullah*/{
         if (!selectedProject.isLeader(loggedInUser)) {
             showError("Only the leader can approve.");
             return;
@@ -452,7 +452,7 @@ public class PrimaryController {
     }
 
     @FXML
-    protected void rejectActivity() {
+    protected void rejectActivity() /*lavet af abdullah*/{
         if (!selectedProject.isLeader(loggedInUser)) {
             showError("Only the leader can reject.");
             return;
@@ -463,7 +463,7 @@ public class PrimaryController {
         updateProjectList();
     }
 
-    private void updateStatusLabel(Activity activity) {
+    private void updateStatusLabel(Activity activity) /*lavet af abdullah*/{
         Activity.ActivityStatus status = activity.getStatus();
         statusLabel.setText("Status: " + status);
         switch (status) {
@@ -476,7 +476,7 @@ public class PrimaryController {
 
     // ----------------------------- UTILITY -----------------------------
 
-    private int parseInt(String value) {
+    private int parseInt(String value) /*lavet af lano*/{
         try {
             return Integer.parseInt(value);
         } catch (NumberFormatException e) {
@@ -484,14 +484,14 @@ public class PrimaryController {
         }
     }
 
-    private void showError(String message) {
+    private void showError(String message) /*lavet af lano*/{
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
         alert.setContentText(message);
         alert.showAndWait();
     }
 
-    private void showInfo(String message) {
+    private void showInfo(String message) /*lavet af lano*/{
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Success");
         alert.setContentText(message);
