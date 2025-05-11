@@ -1,3 +1,4 @@
+# lavet af haris
 Feature: Registering hours on an activity
 
   Scenario: An employee registers hours

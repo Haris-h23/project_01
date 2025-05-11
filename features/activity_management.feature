@@ -1,3 +1,4 @@
+#lavet af haris
 Feature: Activity management
 
   Scenario: Create a new activity
