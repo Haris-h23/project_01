@@ -228,6 +228,11 @@ public class PrimaryController {
 
     @FXML
     protected void editActivity() {
+
+    if (!selectedProject.isLeader(loggedInUser)) {
+        showError("Only the project leader can edit this activity.");
+        return;
+    }
         if (selectedActivity == null) {
             showError("Select an activity first!");
             return;
